@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ProgressBar mLoadingIndicatorPB;
     private TextView mLoadingErrorMessageTV;
 
+    private FlickrPhotoGridAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mLoadingErrorMessageTV = (TextView)findViewById(R.id.tv_loading_error_message);
         mPhotosRV = (RecyclerView)findViewById(R.id.rv_photos);
 
+        mAdapter = new FlickrPhotoGridAdapter();
         mPhotosRV.setLayoutManager(new StaggeredGridLayoutManager(NUM_PHOTO_COLUMNS, StaggeredGridLayoutManager.VERTICAL));
+        mPhotosRV.setHasFixedSize(true);
+        mPhotosRV.setAdapter(mAdapter);
 
         getSupportLoaderManager().initLoader(FLICKR_EXPLORE_LOADER_ID, null, this);
     }
@@ -84,9 +89,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
             mPhotosRV.setVisibility(View.VISIBLE);
             FlickrUtils.FlickrPhoto[] photos = FlickrUtils.parseFlickrExploreResultsJSON(data);
-            for (FlickrUtils.FlickrPhoto photo : photos) {
-                Log.d(TAG, "Got photo: " + photo.url_m);
-            }
+            mAdapter.updatePhotos(photos);
+//            for (FlickrUtils.FlickrPhoto photo : photos) {
+//                Log.d(TAG, "Got photo: " + photo.url_m);
+//            }
         } else {
             mPhotosRV.setVisibility(View.INVISIBLE);
             mLoadingErrorMessageTV.setVisibility(View.VISIBLE);
