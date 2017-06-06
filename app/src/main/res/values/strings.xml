@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CS 496 Photo Gallery</string>
+    <string name="loading_error_message">We couldn\'t connect to Flickr. Check your internet connection and try again.</string>
+</resources>
