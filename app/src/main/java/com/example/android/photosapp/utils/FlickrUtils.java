@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import com.example.android.photosapp.BuildConfig;
 import com.google.gson.Gson;
 
+import java.io.Serializable;
+
 /**
  * Created by hessro on 6/6/17.
  */
@@ -21,7 +23,7 @@ public class FlickrUtils {
     private static final String FLICKR_API_NOJSONCALLBACK_PARAM = "nojsoncallback";
     private static final String FLICKR_API_NOJSONCALLBACK = "1";
     private static final String FLICKR_API_EXTRAS_PARAM = "extras";
-    private static final String[] FLICKR_API_EXTRAS = {"url_m", "owner_name"};
+    private static final String[] FLICKR_API_EXTRAS = {"url_l", "url_m", "owner_name"};
 
     private static final String FLICKR_API_KEY = BuildConfig.FLICKR_API_KEY;
 
@@ -36,10 +38,15 @@ public class FlickrUtils {
         FlickrPhoto[] photo;
     }
 
-    public static class FlickrPhoto {
+    public static class FlickrPhoto implements Serializable {
         public String title;
         public String ownername;
+        public String url_l;
         public String url_m;
+        public int width_l;
+        public int height_l;
+        public int width_m;
+        public int height_m;
     }
 
     public static String buildFlickrExploreURL() {
