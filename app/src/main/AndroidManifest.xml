@@ -18,6 +18,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PhotoViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label=""
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.photosapp.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

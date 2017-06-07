@@ -1,6 +1,8 @@
 package com.example.android.photosapp;
 
+import android.content.Intent;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +19,8 @@ import com.example.android.photosapp.utils.NetworkUtils;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class MainActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<String>, FlickrPhotoGridAdapter.OnPhotoItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int FLICKR_EXPLORE_LOADER_ID = 0;
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mLoadingErrorMessageTV = (TextView)findViewById(R.id.tv_loading_error_message);
         mPhotosRV = (RecyclerView)findViewById(R.id.rv_photos);
 
-        mAdapter = new FlickrPhotoGridAdapter();
+        mAdapter = new FlickrPhotoGridAdapter(this);
         mPhotosRV.setLayoutManager(new StaggeredGridLayoutManager(NUM_PHOTO_COLUMNS, StaggeredGridLayoutManager.VERTICAL));
         mPhotosRV.setHasFixedSize(true);
         mPhotosRV.setAdapter(mAdapter);
@@ -103,5 +106,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<String> loader) {
         // Nothing.
+    }
+
+    @Override
+    public void onPhotoItemClick(int photoIdx) {
+//        Log.d(TAG, "Clicked photo: " + photoIdx);
+        Intent intent = new Intent(this, PhotoViewActivity.class);
+        startActivity(intent);
     }
 }

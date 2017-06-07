@@ -18,6 +18,11 @@ import com.example.android.photosapp.utils.FlickrUtils;
 
 public class FlickrPhotoGridAdapter extends RecyclerView.Adapter<FlickrPhotoGridAdapter.FlickrPhotoViewHolder> {
     private FlickrUtils.FlickrPhoto[] mPhotos;
+    private OnPhotoItemClickListener mPhotoItemClickListener;
+
+    public FlickrPhotoGridAdapter(OnPhotoItemClickListener photoItemClickListener) {
+        mPhotoItemClickListener = photoItemClickListener;
+    }
 
     public void updatePhotos(FlickrUtils.FlickrPhoto[] photos) {
         mPhotos = photos;
@@ -45,12 +50,17 @@ public class FlickrPhotoGridAdapter extends RecyclerView.Adapter<FlickrPhotoGrid
         }
     }
 
-    class FlickrPhotoViewHolder extends RecyclerView.ViewHolder {
+    public interface OnPhotoItemClickListener {
+        void onPhotoItemClick(int photoIdx);
+    }
+
+    class FlickrPhotoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mPhotoIV;
 
         public FlickrPhotoViewHolder(View itemView) {
             super(itemView);
             mPhotoIV = (ImageView)itemView.findViewById(R.id.iv_photo);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(FlickrUtils.FlickrPhoto photo) {
@@ -58,6 +68,11 @@ public class FlickrPhotoGridAdapter extends RecyclerView.Adapter<FlickrPhotoGrid
                     .load(photo.url_m)
                     .apply(RequestOptions.placeholderOf(new SizedColorDrawable(Color.WHITE, photo.width_m, photo.height_m)))
                     .into(mPhotoIV);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mPhotoItemClickListener.onPhotoItemClick(getAdapterPosition());
         }
     }
 
