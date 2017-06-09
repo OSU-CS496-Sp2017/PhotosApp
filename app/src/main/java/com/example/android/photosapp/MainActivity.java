@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar mLoadingIndicatorPB;
     private TextView mLoadingErrorMessageTV;
 
+    private FlickrUtils.FlickrPhoto[] mPhotos;
     private FlickrPhotoGridAdapter mAdapter;
 
     @Override
@@ -91,8 +92,8 @@ public class MainActivity extends AppCompatActivity
         if (data != null) {
             mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
             mPhotosRV.setVisibility(View.VISIBLE);
-            FlickrUtils.FlickrPhoto[] photos = FlickrUtils.parseFlickrExploreResultsJSON(data);
-            mAdapter.updatePhotos(photos);
+            mPhotos = FlickrUtils.parseFlickrExploreResultsJSON(data);
+            mAdapter.updatePhotos(mPhotos);
 //            for (FlickrUtils.FlickrPhoto photo : photos) {
 //                Log.d(TAG, "Got photo: " + photo.url_m);
 //            }
@@ -112,6 +113,8 @@ public class MainActivity extends AppCompatActivity
     public void onPhotoItemClick(int photoIdx) {
 //        Log.d(TAG, "Clicked photo: " + photoIdx);
         Intent intent = new Intent(this, PhotoViewActivity.class);
+        intent.putExtra(PhotoViewActivity.EXTRA_PHOTOS, mPhotos);
+        intent.putExtra(PhotoViewActivity.EXTRA_PHOTO_IDX, photoIdx);
         startActivity(intent);
     }
 }
